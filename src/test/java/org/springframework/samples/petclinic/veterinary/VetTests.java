@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.petclinic.vet;
+package org.springframework.samples.petclinic.veterinary;
 
 import org.junit.Test;
 import org.springframework.util.SerializationUtils;
@@ -33,7 +33,7 @@ public class VetTests {
         vet.setLastName("Beeblebrox");
         vet.setId(123);
         Vet other = (Vet) SerializationUtils
-                .deserialize(SerializationUtils.serialize(vet));
+            .deserialize(SerializationUtils.serialize(vet));
         assertEquals(vet.getFirstName(), other.getFirstName());
         assertEquals(vet.getLastName(), other.getLastName());
         assertEquals(vet.getId(), other.getId());
