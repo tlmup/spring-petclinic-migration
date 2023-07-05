@@ -8,4 +8,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: mvn -U org.openrewrite.maven:rewrite-maven-plugin:run -Drewrite.activeRecipes=com.yourorg.VetToVeterinary -DskipMavenParsing=true
+      - run: git diff
+      - run: git commit
     
