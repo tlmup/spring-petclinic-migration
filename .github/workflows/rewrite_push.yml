@@ -11,6 +11,7 @@ jobs:
       - run: git commit
       
   commit:
+    needs: rewrite-run
     runs-on: ubuntu-latest
 
     permissions:
