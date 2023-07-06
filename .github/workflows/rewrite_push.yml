@@ -9,13 +9,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: run recipes
-      - run: |
+        run: |
               mvn -U org.openrewrite.maven:rewrite-maven-plugin:run
               -Drewrite.recipeArtifactCoordinates=org.openrewrite.recipe:rewrite-logging-frameworks:RELEASE 
               -Drewrite.activeRecipes=org.openrewrite.java.logging.log4j.Log4j1ToLog4j2
               -DskipMavenParsing=true
       - name: commit changes
-      - uses: stefanzweifel/git-auto-commit-action@v4
+        uses: stefanzweifel/git-auto-commit-action@v4
 
 #      - run: 
 #              git config --global user.name "${{env.commit_author}}"
