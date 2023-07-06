@@ -1,9 +1,60 @@
 ---
----
 type: specs.openrewrite.org/v1beta/recipe
-name: com.yourorg.VetToVeterinary
+name: org.openrewrite.java.logging.log4j.Log4j1ToLog4j2
+displayName: Migrate Log4j 1.x to Log4j 2.x
+description: Migrates Log4j 1.x to Log4j 2.x.
+tags:
+  - logging
+  - log4j
 recipeList:
-  - org.openrewrite.java.format.AutoFormat
   - org.openrewrite.java.ChangePackage:
-      oldPackageName: org.springframework.samples.petclinic.vet
-      newPackageName: org.springframework.samples.petclinic.veterinary
+      oldPackageName: org.apache.log4j
+      newPackageName: org.apache.logging.log4j
+  - org.openrewrite.java.ChangeMethodTargetToStatic:
+      methodPattern: org.apache.logging.log4j.Logger getLogger(..)
+      fullyQualifiedTargetTypeName: org.apache.logging.log4j.LogManager
+  - org.openrewrite.java.ChangeMethodTargetToStatic:
+      methodPattern: org.apache.logging.log4j.Logger getRootLogger()
+      fullyQualifiedTargetTypeName: org.apache.logging.log4j.LogManager
+  - org.openrewrite.java.ChangeMethodName:
+      methodPattern: org.apache.logging.log4j.Category getEffectiveLevel()
+      newMethodName: getLevel
+  - org.openrewrite.java.logging.log4j.ParameterizedLogging
+  - org.openrewrite.maven.AddDependency:
+      groupId: org.apache.logging.log4j
+      artifactId: log4j-api
+      version: latest.release
+      onlyIfUsing: org.apache.log4j.*
+  - org.openrewrite.maven.AddDependency:
+      groupId: org.apache.logging.log4j
+      artifactId: log4j-core
+      version: latest.release
+      onlyIfUsing: org.apache.log4j.*
+  - org.openrewrite.maven.RemoveDependency:
+      groupId: log4j
+      artifactId: log4j
+  - org.openrewrite.maven.RemoveDependency:
+      groupId: ch.qos.reload4j
+      artifactId: reload4j
+  - org.openrewrite.maven.AddDependency:
+      groupId: org.apache.logging.log4j
+      artifactId: log4j-api
+      version: latest.release
+      onlyIfUsing: org.apache.logging.log4j.*
+  - org.openrewrite.maven.AddDependency:
+      groupId: org.apache.logging.log4j
+      artifactId: log4j-core
+      version: latest.release
+      onlyIfUsing: org.apache.logging.log4j.*
+  - org.openrewrite.maven.ChangeDependencyGroupIdAndArtifactId:
+      oldGroupId: org.slf4j
+      oldArtifactId: slf4j-log4j12
+      newGroupId: org.apache.logging.log4j
+      newArtifactId: log4j-slf4j-impl
+      newVersion: latest.release
+  - org.openrewrite.maven.ChangeDependencyGroupIdAndArtifactId:
+      oldGroupId: org.slf4j
+      oldArtifactId: slf4j-reload4j
+      newGroupId: org.apache.logging.log4j
+      newArtifactId: log4j-slf4j-impl
+      newVersion: latest.release
